@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //RecyclerView的item的点按编辑和长按删除
+//        RecyclerView的item的点按编辑和长按删除
         adapter.setOnRecyclerViewItemClickListener(new StaggerAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {

@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class RecycleViewBaseAdapter extends RecyclerView.Adapter<RecycleViewBaseAdapter.InnerHolder> {
 
     LayoutInflater inflater;
-    List<Note> allNotes = new ArrayList<>();
+    List<Note> allNotes ;
 
     public void setAllNotes(List<Note> allNotes){
         this.allNotes = allNotes;
