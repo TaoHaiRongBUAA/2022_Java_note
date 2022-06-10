@@ -35,11 +35,6 @@ public class StaggerAdapter  extends RecycleViewBaseAdapter
     }
 
 
-
-
-
-
-
     //自定义接口实现点击事件
     public interface OnRecyclerViewItemClickListener{
         void onItemClick(RecyclerView parent, View view, int position);

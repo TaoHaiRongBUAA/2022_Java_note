@@ -8,7 +8,6 @@
     android:background="#f5f5f5">
 
     <com.google.android.material.appbar.AppBarLayout
-
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:collapsedTitleGravity="center"
-            app:contentScrim="#ffffff"
+            app:contentScrim="#f5f5f5"
             app:expandedTitleMarginEnd="60dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -35,23 +34,27 @@
                 android:contentDescription="@string/picture"
                 android:maxHeight="250dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bgp2" />
+                android:src="@mipmap/bgp2"
+                app:layout_collapseMode="pin"
+                app:layout_collapseParallaxMultiplier="0.5" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="Note">
+                <!--                app:navigationIcon="@mipmap/search_icon_56"-->
 
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-
+        android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -60,6 +63,8 @@
             android:layout_height="match_parent" />
 
     </androidx.core.widget.NestedScrollView>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_note"

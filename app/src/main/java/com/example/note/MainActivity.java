@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         allNoteLive = noteDao.getAllNotesLive();
         imageView = findViewById(R.id.mainBackPic);
 
-        collapsingToolbarLayout.setTitle("Note");
-        toolbar.setTitle("Note");
+//        collapsingToolbarLayout.setTitle("Note");
+//        toolbar.setTitle("Note");
         setSupportActionBar(toolbar);
 
         shp = getPreferences(Context.MODE_PRIVATE);
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(Build.VERSION.SDK_INT > 24){
             imageUri = FileProvider.getUriForFile(this,
-                    "com.example.note_6.fileprovider", imageTemp);
+                    "com.example.note.fileprovider", imageTemp);
         }else{
             imageUri = Uri.fromFile(imageTemp);
         }
