@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/byCamera"
+        android:title="拍照" />
+    <item
+        android:id="@+id/byAlbum"
+        android:title="相册" />
+    <item
+        android:id="@+id/defaultBackground"
+        android:title="默认背景"/>
+
+</menu>

@@ -169,7 +169,7 @@ public class New_note extends AppCompatActivity {
 
     private void goBack(){
         Intent intent = new Intent(New_note.this,MainActivity.class);
-        intent.putExtra("res", 0);
+        intent.putExtra("res", 4);
         setResult(RESULT_OK, intent);
         startActivity(intent);
         New_note.this.finish();
