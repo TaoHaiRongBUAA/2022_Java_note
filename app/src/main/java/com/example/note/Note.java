@@ -7,45 +7,27 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Note {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     private String title;
     private String content;
     private String time;
-//    private float urgent;
-//    private float important;
+    private int tag;
 
+    public Note() {
+    }
 
-//    public Note(String title, String content, String time, float urgent, float important){
-    public Note(String title, String content, String time){
+    public Note(String title, String content, String time, int tag){
         this.title = title;
         this.content = content;
         this.time = time;
-//        this.urgent = urgent;
-//        this.important = important;
+        this.tag = tag;
     }
-
-//    public float getUrgent() {
-//        return urgent;
-//    }
-//
-//    public void setUrgent(int urgent) {
-//        this.urgent = urgent;
-//    }
-//
-//    public float getImportant() {
-//        return important;
-//    }
-//
-//    public void setImportant(int important) {
-//        this.important = important;
-//    }
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,6 +37,14 @@ public class Note {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getTag() {
+        return tag;
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 
     public String getContent() {
@@ -71,5 +61,16 @@ public class Note {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
+                ", tag=" + tag +
+                '}';
     }
 }

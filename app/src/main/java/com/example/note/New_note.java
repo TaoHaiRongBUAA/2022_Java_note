@@ -2,6 +2,7 @@ package com.example.note;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
@@ -21,9 +22,10 @@ public class New_note extends AppCompatActivity {
     EditText ed_content;
     FloatingActionButton floatingActionButton;
     Note note;
-    int ids;
+    long ids;
     NoteDatabase noteDatabase;
-    NoteDao noteDao;
+    CRUB operator;
+//    NoteDao noteDao;
 //    RatingBar urgentRatingBar;
 //    RatingBar importantRatingBar;
 //    float urgent = 0;
@@ -35,85 +37,45 @@ public class New_note extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_note);
 
-
+        operator = new CRUB(getApplicationContext());
         ed_title = findViewById(R.id.title);
         ed_content = findViewById(R.id.content);
         floatingActionButton = findViewById(R.id.finish);
-        noteDatabase = NoteDatabase.getDatabase(this);
         Intent intent = this.getIntent();
-        ids = intent.getIntExtra("ids",0);
-        noteDao = noteDatabase.getNoteDao();
-//        urgentRatingBar = findViewById(R.id.urgentRatingBar);
-//        importantRatingBar = findViewById(R.id.importantRatingBar);
+        ids = intent.getLongExtra("ids",0);
+//        noteDao = noteDatabase.getNoteDao();
 
 
         if (ids != 0){
-            note = noteDatabase.getNoteDao().getNoteById(ids);
+//            note = noteDatabase.getNoteDao().getNoteById(ids);
+
+            operator.open();
+            note = operator.getNote(ids);
+            operator.close();
+
             ed_title.setText(note.getTitle());
             ed_content.setText(note.getContent());
-//            urgentRatingBar.setRating(note.getUrgent());
-//            importantRatingBar.setRating(note.getImportant());
         }
 
         //为悬浮按钮设置监听事件
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isSave();
+                saveNote();
             }
         });
-
-//        urgentRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
-//
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-//                urgent = v;
-//            }
-//        });
-//        importantRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
-//
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-//                important = v;
-//            }
-//        });
 
     }
 
     //重写返回方法，如果是属于新建Note，则插入数据表并返回主页面，如果是修改Note，修改表中数据并返回主页面
     @Override
     public void onBackPressed() {
-        //编辑便签的时间，格式化
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd   HH:mm");
-
-        Date date = new Date(System.currentTimeMillis());
-        String time = simpleDateFormat.format(date);
-        String title = ed_title.getText().toString();
-        String content = ed_content.getText().toString();
-        if(ids!=0){
-//            note = new Note(title, content, time, urgent, important);
-            note = new Note(title, content, time);
-            note.setId(ids);
-            noteDao.updateNotes(note);
-            Intent intent=new Intent(New_note.this,MainActivity.class);
-            startActivity(intent);
-            New_note.this.finish();
-        }
-        //若ids == 0, 新建note
-        else{
-//            note = new Note(title, content, time, urgent, important);
-            note = new Note(title, content, time);
-            noteDao.insertNotes(note);
-            Intent intent=new Intent(New_note.this,MainActivity.class);
-            startActivity(intent);
-            New_note.this.finish();
-        }
-
+        saveNote();
     }
 
 
     // 保存Note的方法
-    private void isSave(){
+    private void saveNote(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH：mm");
         Date date = new Date(System.currentTimeMillis());
         String time = simpleDateFormat.format(date);
@@ -122,22 +84,29 @@ public class New_note extends AppCompatActivity {
         String content = ed_content.getText().toString();
         if(ids!=0){
 //            note = new Note(title, content, time,urgent, important);
-            note = new Note(title, content, time);
+            note = new Note(title, content, time, 1);
             note.setId(ids);
-            noteDao.updateNotes(note);
-            Intent intent=new Intent(New_note.this,MainActivity.class);
-            startActivity(intent);
-            New_note.this.finish();
+
+//            noteDao.updateNotes(note);
+            operator.open();
+            operator.updateNote(note);
+            operator.close();
         }
         //新建note
         else{
 //            note = new Note(title, content, time, urgent, important);
-            note = new Note(title, content, time);
-            noteDao.insertNotes(note);
-            Intent intent=new Intent(New_note.this,MainActivity.class);
-            startActivity(intent);
-            New_note.this.finish();
+            note = new Note(title, content, time, 1);
+//            noteDao.insertNotes(note);
+            operator.open();
+            operator.addNote(note);
+            operator.close();
         }
+        Intent intent = new Intent(New_note.this,MainActivity.class);
+        intent.putExtra("res", 0);
+        setResult(RESULT_OK, intent);
+        startActivity(intent);
+        New_note.this.finish();
     }
+
 
 }

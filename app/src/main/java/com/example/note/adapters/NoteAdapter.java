@@ -1,9 +1,9 @@
 package com.example.note.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,23 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.note.Note;
 import com.example.note.R;
 
-import java.util.Collections;
 import java.util.List;
 
+public class NoteAdapter extends RecycleViewBaseAdapter implements View.OnClickListener{
 
-public class StaggerAdapter  extends RecycleViewBaseAdapter
-        implements View.OnClickListener, ItemTouchCallBack.OnItemTouchListener{
 
-    private static final String TAG = "Adapter";
-
-    public StaggerAdapter(LayoutInflater inf, List<Note> arry) {
+    public NoteAdapter(LayoutInflater inf, List<Note> arry) {
         super(inf, arry);
     }
 
-
     @Override
     protected View getSubView(ViewGroup parent, int viewType) {
-        return View.inflate(parent.getContext(), R.layout.note_item, null);
+        return View.inflate(parent.getContext(), R.layout.note_item_list, null);
     }
 
 
@@ -38,39 +33,18 @@ public class StaggerAdapter  extends RecycleViewBaseAdapter
         return super.onCreateViewHolder(parent, viewType);
     }
 
-
-    @Override
-    public void onMove(int fromPosition, int toPosition) {
-        Log.d(TAG, "onMove: onMove is called!");
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(allNotes, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(allNotes, i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onSwiped(int position) {
-
-    }
-
     //自定义接口实现点击事件
     public interface OnRecyclerViewItemClickListener{
         void onItemClick(RecyclerView parent, View view, int position);
         void onItemLongClick(RecyclerView parent, View view, int position);
     }
 
-    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
+    private NoteAdapter.OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
     private RecyclerView recyclerView;
 
     //实现接口，设置监听器
 
-    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener){
+    public void setOnRecyclerViewItemClickListener(NoteAdapter.OnRecyclerViewItemClickListener onRecyclerViewItemClickListener){
         this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }
 
@@ -81,7 +55,6 @@ public class StaggerAdapter  extends RecycleViewBaseAdapter
         if(onRecyclerViewItemClickListener != null)
             onRecyclerViewItemClickListener.onItemClick(recyclerView, view, postion);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position, @NonNull List<Object> payloads) {
@@ -105,6 +78,4 @@ public class StaggerAdapter  extends RecycleViewBaseAdapter
             });
         }
     }
-
-
 }
