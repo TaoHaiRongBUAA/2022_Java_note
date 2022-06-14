@@ -61,14 +61,14 @@ public class CRUB {
 
     @SuppressLint("Range")
     public List<Note> getAllNotes(){
-        Log.d(TAG, "in getAllNotes");
+//        Log.d(TAG, "in getAllNotes");
 
         Cursor cursor = db.query(NoteDatabase.TABLE_NAME, columns,
                 null, null, null, null, null);
 
         List<Note> notes = new ArrayList<>();
 
-        Log.d(TAG, "query over! with count" + cursor.getCount());
+//        Log.d(TAG, "query over! with count" + cursor.getCount());
 
         if (cursor.getCount() > 0){
             while(cursor.moveToNext()){
@@ -82,7 +82,7 @@ public class CRUB {
             }
         }
 
-        Log.d(TAG, "add over!");
+//        Log.d(TAG, "add over!");
         return notes;
     }
 
