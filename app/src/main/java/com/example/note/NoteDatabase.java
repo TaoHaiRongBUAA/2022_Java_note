@@ -1,6 +1,7 @@
 package com.example.note;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -15,7 +16,6 @@ public class NoteDatabase extends SQLiteOpenHelper {
     public static final String CONTENT = "content";
     public static final String ID = "_id"; //'_'表示为主键
     public static final String TIME = "time";
-    public static final String TAG = "tag";
 
     public NoteDatabase(@Nullable Context context) {
         super(context, "notes", null, 1);
@@ -28,23 +28,14 @@ public class NoteDatabase extends SQLiteOpenHelper {
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + TITLE + " TEXT NOT NULL,"
                 + CONTENT + " TEXT NOT NULL,"
-                + TIME + " TEXT NOT NULL,"
-                + TAG + " INTEGER DEFAULT 1)"
+                + TIME + " TEXT NOT NULL)"
         );
     }
 
+    //更新版本用
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        for (int i = oldVersion; i < newVersion; i++) {
-//            switch (i){
-//                case 1:
-//                    break;
-//                case 2:
-//                    updateMode(db);
-//                default:
-//                    break;
-//            }
-//        }
+
     }
 
 

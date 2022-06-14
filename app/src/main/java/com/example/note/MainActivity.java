@@ -25,7 +25,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,15 +48,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.LayoutInflaterCompat;
-import androidx.lifecycle.Observer;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.note.adapters.NoteAdapter;
-import com.example.note.adapters.RecycleViewBaseAdapter;
+import com.example.note.adapters.ItemTouchCallBack;
+import com.example.note.adapters.NoteListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -73,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "mainActivity";
     FloatingActionButton btn;
     LayoutInflater layoutInflater;
+
     private NoteDatabase dbHelper;
     private RecyclerView recyclerView;
     private List<Note> allNotes = new ArrayList<>();
-    private NoteAdapter adapter;
+    private NoteListAdapter adapter;
     private Context context = this;
     private Toolbar toolbar;
 
@@ -145,12 +143,13 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter = new NoteAdapter(layoutInflater,  allNotes);
+        adapter = new NoteListAdapter(layoutInflater,  allNotes);
         recyclerView.setAdapter(adapter);
         refreshRecyclerView();
 
 
-        adapter.setOnRecyclerViewItemClickListener(new NoteAdapter.OnRecyclerViewItemClickListener() {
+
+        adapter.setOnRecyclerViewItemClickListener(new NoteListAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 Intent intent = new Intent(getApplicationContext(),New_note.class);
@@ -162,11 +161,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(RecyclerView parent, View view, int position) {
-//                showPopmenu(view, position);
+                Intent intent = new Intent(getApplicationContext(),editOrder.class);
+                startActivity(intent);
+                MainActivity.this.finish();
             }
         });
-
-        
     }
 
     // 刷新界面

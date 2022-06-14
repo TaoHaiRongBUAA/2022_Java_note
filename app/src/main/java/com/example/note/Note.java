@@ -12,16 +12,14 @@ public class Note {
     private String title;
     private String content;
     private String time;
-    private int tag;
 
     public Note() {
     }
 
-    public Note(String title, String content, String time, int tag){
+    public Note(String title, String content, String time){
         this.title = title;
         this.content = content;
         this.time = time;
-        this.tag = tag;
     }
     public long getId() {
         return id;
@@ -39,13 +37,6 @@ public class Note {
         this.title = title;
     }
 
-    public int getTag() {
-        return tag;
-    }
-
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
 
     public String getContent() {
         return content;
@@ -70,7 +61,6 @@ public class Note {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", time='" + time + '\'' +
-                ", tag=" + tag +
                 '}';
     }
 }

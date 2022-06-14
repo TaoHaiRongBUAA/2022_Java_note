@@ -33,11 +33,6 @@ public class New_note extends AppCompatActivity {
     CRUB operator;
     Toolbar toolbar;
     int isNew;
-//    NoteDao noteDao;
-//    RatingBar urgentRatingBar;
-//    RatingBar importantRatingBar;
-//    float urgent = 0;
-//    float important = 0;
 
 
     @Override
@@ -67,11 +62,8 @@ public class New_note extends AppCompatActivity {
         Intent intent = this.getIntent();
         ids = intent.getLongExtra("ids",-1);
         isNew = intent.getIntExtra("isNew", 0);
-//        noteDao = noteDatabase.getNoteDao();
 
         if (ids != -1){
-//            note = noteDatabase.getNoteDao().getNoteById(ids);
-
             operator.open();
             note = operator.getNote(ids);
             operator.close();
@@ -109,9 +101,7 @@ public class New_note extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (isNew == 0){
                                     operator.open();
-                                    Note tmp = new Note();
-                                    tmp.setId(ids);
-                                    operator.removeNote(tmp);
+                                    operator.removeNote(note);
                                     operator.close();
                                     goBack();
                                 }
@@ -146,20 +136,17 @@ public class New_note extends AppCompatActivity {
         String title = ed_title.getText().toString();
         String content = ed_content.getText().toString();
         if(ids != -1){
-//            note = new Note(title, content, time,urgent, important);
-            note = new Note(title, content, time, 1);
-            note.setId(ids);
+            note.setTitle(title);
+            note.setContent(content);
+            note.setTime(time);
 
-//            noteDao.updateNotes(note);
             operator.open();
             operator.updateNote(note);
             operator.close();
         }
         //新建note
         else if (isNew == 1 && (!title.equals("") || !content.equals(""))){
-//            note = new Note(title, content, time, urgent, important);
-            note = new Note(title, content, time, 1);
-//            noteDao.insertNotes(note);
+            note = new Note(title, content, time);
             operator.open();
             operator.addNote(note);
             operator.close();
