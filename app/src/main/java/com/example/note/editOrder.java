@@ -8,37 +8,58 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.note.R;
 import com.example.note.adapters.ItemTouchCallBack;
 import com.example.note.adapters.NoteListAdapter;
+import com.example.note.adapters.PlanBaseAdapter;
+import com.example.note.adapters.PlanListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class editOrder extends AppCompatActivity {
 
+    private static final String TAG = "edit order";
     LayoutInflater layoutInflater;
-    private NoteDatabase dbHelper;
+    private NoteDatabase noteDatabase;
+    private PlanDatabase planDatabase;
     private RecyclerView recyclerView;
-    private List<Note> allNotes = new ArrayList<>();
-    private NoteListAdapter adapter;
+    private List<Item> allItems = new ArrayList<>();
+    private NoteListAdapter noteAdapter;
+    private PlanBaseAdapter planAdapter;
     private Context context = this;
     private Toolbar toolbar;
-    CRUB operator;
+
+    SharedPreferences shp;
+    int inNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_order);
 
-        operator = new CRUB(context);
-        operator.open();
-        allNotes.addAll(operator.getAllNotes());
-        operator.close();
+        Intent intent = this.getIntent();
+        inNote = intent.getIntExtra("inNote",-1);
+
+        if (inNote == 0){
+            NoteCRUB operator = new NoteCRUB(context);
+            operator.open();
+            allItems.addAll(operator.getAllNotes());
+            operator.close();
+        }
+        else {
+            PlanCRUB operator = new PlanCRUB(context);
+            operator.open();
+            allItems.addAll(operator.getAllPlans());
+            operator.close();
+        }
+
 
         recyclerView = (RecyclerView) findViewById(R.id.editOrder_recycleView);
         toolbar = (Toolbar) findViewById(R.id.editOrder_toolbar);
@@ -52,12 +73,25 @@ public class editOrder extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_baseline_check_24);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        adapter = new NoteListAdapter(layoutInflater,  allNotes);
-        recyclerView.setAdapter(adapter);
+
+        if (inNote == 0){
+            recyclerView.setAdapter(noteAdapter);
+            noteAdapter = new NoteListAdapter(layoutInflater,  (List<Note>)(List<?>) allItems);
+            recyclerView.setAdapter(noteAdapter);
+        }
+        else{
+            recyclerView.setAdapter(planAdapter);
+            planAdapter = new PlanListAdapter(layoutInflater,  (List<Plan>)(List<?>) allItems);
+            recyclerView.setAdapter(planAdapter);
+        }
 
         ItemTouchCallBack touchCallBack = new ItemTouchCallBack();
-        touchCallBack.setOnItemTouchListener(adapter);
+        if (inNote == 0){
+            touchCallBack.setOnItemTouchListener(noteAdapter);
+        }
+        else {
+            touchCallBack.setOnItemTouchListener(planAdapter);
+        }
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchCallBack);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -72,12 +106,27 @@ public class editOrder extends AppCompatActivity {
     }
 
     private void finishEdit() {
-        for (Note note :
-                allNotes) {
+        Log.d(TAG, "finishEdit: in finishEdit");
+
+        if (inNote == 0){
+            NoteCRUB operator = new NoteCRUB(context);
             operator.open();
-            operator.updateNote(note);
+            for (Item item :
+                    allItems) {
+                operator.updateNote((Note)item);
+            }
             operator.close();
         }
+        else  {
+            PlanCRUB operator = new PlanCRUB(context);
+            operator.open();
+            for (Item item :
+                    allItems) {
+                operator.updatePlan((Plan) item);
+            }
+            operator.close();
+        }
+
 
         Intent intent = new Intent(editOrder.this,MainActivity.class);
         intent.putExtra("res", 4);

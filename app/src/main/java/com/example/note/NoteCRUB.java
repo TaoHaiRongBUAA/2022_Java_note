@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // note 的增删改查操作
-public class CRUB {
-    final String TAG = "CRUB";
+public class NoteCRUB {
+    final String TAG = "NoteCRUB";
     SQLiteOpenHelper dbHandler;
     SQLiteDatabase db;
 
@@ -24,7 +24,7 @@ public class CRUB {
             NoteDatabase.TIME,
     };
 
-    public CRUB(Context context){
+    public NoteCRUB(Context context){
         dbHandler = new NoteDatabase(context);
     }
 

@@ -14,13 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name="com.example.note.editOrder"
+            android:name=".BlockActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.note.New_note"
-            android:exported="true"></activity>
+            android:name=".editOrder"
+            android:exported="false" />
         <activity
-            android:name="com.example.note.MainActivity"
+            android:name=".New_note"
+            android:exported="true" />
+        <activity
+            android:name=".New_plan"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

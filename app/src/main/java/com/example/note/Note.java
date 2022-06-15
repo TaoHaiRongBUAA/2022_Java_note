@@ -1,16 +1,10 @@
 package com.example.note;
 
+import androidx.annotation.NonNull;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity
-public class Note {
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+public class Note extends Item{
 
     private String title;
-    private String content;
     private String time;
 
     public Note() {
@@ -21,13 +15,6 @@ public class Note {
         this.content = content;
         this.time = time;
     }
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -35,15 +22,6 @@ public class Note {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getTime() {
@@ -54,6 +32,7 @@ public class Note {
         this.time = time;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Note{" +

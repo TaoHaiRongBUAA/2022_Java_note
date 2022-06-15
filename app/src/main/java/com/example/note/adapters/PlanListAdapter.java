@@ -8,23 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.example.note.Note;
+import com.example.note.Plan;
 import com.example.note.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteListAdapter extends NoteBaseAdapter{
+public class PlanListAdapter extends PlanBaseAdapter  {
 
-
-    public NoteListAdapter(LayoutInflater inf, List<Note> arry) {
+    public PlanListAdapter(LayoutInflater inf, List<Plan> arry) {
         super(inf, arry);
     }
 
     @Override
     protected View getSubView(ViewGroup parent, int viewType) {
-        return View.inflate(parent.getContext(), R.layout.note_item_list, null);
+        return View.inflate(parent.getContext(), R.layout.plan_item_list, null);
     }
+
+
 
 
 }

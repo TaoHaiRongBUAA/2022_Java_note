@@ -25,6 +25,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -55,6 +57,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note.adapters.ItemTouchCallBack;
 import com.example.note.adapters.NoteListAdapter;
+import com.example.note.adapters.PlanBaseAdapter;
+import com.example.note.adapters.PlanListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -70,11 +74,14 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "mainActivity";
     FloatingActionButton btn;
     LayoutInflater layoutInflater;
+    int inNote;
 
     private NoteDatabase dbHelper;
+    private PlanDatabase planDatabase;
     private RecyclerView recyclerView;
-    private List<Note> allNotes = new ArrayList<>();
-    private NoteListAdapter adapter;
+    private List<Item> allItems = new ArrayList<>();
+    private NoteListAdapter noteAdapter;
+    private PlanBaseAdapter planAdapter;
     private Context context = this;
     private Toolbar toolbar;
 
@@ -90,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup coverView;
     ImageView iv_setting_pic;
     TextView tv_setting_pic;
+    ImageView iv_setting_mode;
+    TextView tv_setting_mode;
 
     //图片
     private Uri imageUri;
@@ -109,9 +118,18 @@ public class MainActivity extends AppCompatActivity {
 
         btn = (FloatingActionButton)findViewById(R.id.floatingActionButton);
         recyclerView = (RecyclerView) findViewById(R.id.recycle_list_view);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         layoutInflater = getLayoutInflater();
+
+        // 获取保存到磁盘的数据
+        shp = getPreferences(Context.MODE_PRIVATE);
+        editor = shp.edit();
+        setPicture(recyclerView);
+        inNote = shp.getInt("inNote", 0);
+//        inNote = 1;
+
+        Log.d(TAG, "inNote is " + inNote + "\n");
 
         // 设置toolbar代替actionbar
         setSupportActionBar(toolbar);
@@ -119,9 +137,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
 
-        shp = getPreferences(Context.MODE_PRIVATE);
-        editor = shp.edit();
-        setPicture(recyclerView);
+//        Log.d("setting", "before setting");
+        if (inNote == 0){
+            getSupportActionBar().setTitle("Note");
+            Log.d("setting", "setting in Note = 0");
+        }else if(inNote == 1){
+            getSupportActionBar().setTitle("Plan");
+            Log.d("setting", "setting in Note = 1");
+        }
+
 
         initPopUpView();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -135,53 +159,113 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, New_note.class);
-                intent.putExtra("isNew", 1);
-                startActivity(intent);
+                if (inNote == 0){
+                    Intent intent = new Intent(MainActivity.this, New_note.class);
+                    intent.putExtra("isNew", 1);
+                    startActivity(intent);
+                }
+                else if (inNote == 1){
+                    Intent intent = new Intent(MainActivity.this, New_plan.class);
+                    intent.putExtra("isNew", 1);
+                    startActivity(intent);
+                }
             }
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        adapter = new NoteListAdapter(layoutInflater,  allNotes);
-        recyclerView.setAdapter(adapter);
+        if (inNote == 0){
+            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Note>) (List<?>)allItems);
+            noteAdapter = new NoteListAdapter(layoutInflater,  (List<Note>) (List<?>)allItems);
+            recyclerView.setAdapter(noteAdapter);
+        }else{
+            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Plan>) (List<?>)allItems);
+            planAdapter = new PlanListAdapter(layoutInflater,  (List<Plan>) (List<?>)allItems);
+            recyclerView.setAdapter(planAdapter);
+        }
         refreshRecyclerView();
 
+        if (inNote == 0){
+            noteAdapter.setOnRecyclerViewItemClickListener(new NoteListAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    Intent intent = new Intent(getApplicationContext(),New_note.class);
+                    intent.putExtra("ids",allItems.get(position).getId());
+                    intent.putExtra("isNew", 0);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                }
+
+                @Override
+                public void onItemLongClick(RecyclerView parent, View view, int position) {
+                    Intent intent = new Intent(getApplicationContext(),editOrder.class);
+                    intent.putExtra("inNote", 0);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                }
+            });
+        }
+        else if(inNote == 1){
+            planAdapter.setOnRecyclerViewItemClickListener(new PlanListAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    Intent intent = new Intent(getApplicationContext(),New_plan.class);
+                    intent.putExtra("ids",allItems.get(position).getId());
+                    intent.putExtra("isNew", 0);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                }
+
+                @Override
+                public void onItemLongClick(RecyclerView parent, View view, int position) {
+                    Intent intent = new Intent(getApplicationContext(),editOrder.class);
+                    intent.putExtra("inNote", 1);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                }
+            });
+        }
 
 
-        adapter.setOnRecyclerViewItemClickListener(new NoteListAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(getApplicationContext(),New_note.class);
-                intent.putExtra("ids",allNotes.get(position).getId());
-                intent.putExtra("isNew", 0);
-                startActivity(intent);
-                MainActivity.this.finish();
-            }
-
-            @Override
-            public void onItemLongClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(getApplicationContext(),editOrder.class);
-                startActivity(intent);
-                MainActivity.this.finish();
-            }
-        });
     }
 
-    // 刷新界面
+    // 刷新recyclerView
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshRecyclerView(){
+    public void refreshRecyclerView(){ // type == 1 表示Note， type == 2 表示plan
 //        Log.d(TAG, "in refreshRecyclerView! ");
-        CRUB operator = new CRUB(context);
-        operator.open();
-        if (allNotes.size() > 0) allNotes.clear();
-//        Log.d(TAG, "in ref 1");
-        allNotes.addAll(operator.getAllNotes());
-//        Log.d(TAG, "in ref 2");
-        operator.close();
-        adapter.notifyDataSetChanged();
+        if (allItems.size() > 0) allItems.clear();
+        if (inNote == 0){
+            NoteCRUB operator = new NoteCRUB(context);
+            operator.open();
+            allItems.addAll(operator.getAllNotes());
+            operator.close();
+            noteAdapter.notifyDataSetChanged();
+        }else if (inNote == 1){
+            PlanCRUB operator = new PlanCRUB(context);
+            operator.open();
+            allItems.addAll(operator.getAllPlans());
+            operator.close();
+            planAdapter.notifyDataSetChanged();
+        }
+        Log.d(TAG, "refresh: allItem = " + allItems.toString());
     }
 
+    public void setInNote(int Mode){
+        Log.d("changing", "in setInNote");
+
+        editor.putInt("inNote", Mode);
+        Boolean flag = editor.commit();
+        Log.d("setInNote", "flag is " + flag);
+
+        Intent intent = new Intent(getApplicationContext(),BlockActivity.class);
+        startActivity(intent);
+        MainActivity.this.finish();
+    }
+
+    // 切换为显示plan
+    public void changeMode(){
+        Log.d("changing", "in showPlan");
+        setInNote(inNote == 0 ? 1 : 0 );
+    }
 
 
     // 配置主页面导航栏
@@ -201,7 +285,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (inNote == 0){
+                    noteAdapter.getFilter().filter(newText);
+                }else{
+                    planAdapter.getFilter().filter(newText);
+                }
+
                 refreshRecyclerView();
                 return false;
             }
@@ -210,13 +299,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     // 设置右上角的点击删除事件
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_clear:
                 new AlertDialog.Builder(MainActivity.this)
-                        .setMessage("确认删除所有便签吗？")
+                        .setMessage("确认删除所有" + (inNote == 0 ? "便签" : "代办") +"吗？")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -265,7 +355,6 @@ public class MainActivity extends AppCompatActivity {
 
                 iv_setting_pic = (ImageView) viewGroup.findViewById(R.id.setting_pic_img);
                 tv_setting_pic = (TextView) viewGroup.findViewById(R.id.setting_pic_txt);
-
                 iv_setting_pic.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -280,6 +369,34 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+
+                iv_setting_mode = (ImageView) viewGroup.findViewById(R.id.settting_mode_img);
+                tv_setting_mode = (TextView) viewGroup.findViewById(R.id.setting_mode_txt);
+
+                if (inNote == 0){
+                    iv_setting_mode.setImageResource(R.drawable.ic_baseline_plan_bulleted_24);
+                    tv_setting_mode.setText("代办");
+                }
+                else {
+                    iv_setting_mode.setImageResource(R.drawable.ic_baseline_note_list_24);
+                    tv_setting_mode.setText("便签");
+                }
+
+                iv_setting_mode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeMode();
+                    }
+                });
+
+                tv_setting_mode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeMode();
+                    }
+                });
+                
+                // 点击空处，回弹操作
                 coverView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {

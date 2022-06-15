@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +20,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class New_note extends AppCompatActivity {
+public class New_plan extends AppCompatActivity {
 
 
-    EditText ed_title;
     EditText ed_content;
     FloatingActionButton floatingActionButton;
-    Note note;
+    Plan plan;
     long ids;
-    NoteDatabase noteDatabase;
-    NoteCRUB operator;
+    PlanDatabase planDatabase;
+    PlanCRUB operator;
     Toolbar toolbar;
     int isNew;
 
@@ -38,13 +36,12 @@ public class New_note extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_note);
+        setContentView(R.layout.new_plan);
 
-        operator = new NoteCRUB(getApplicationContext());
-        ed_title = findViewById(R.id.title);
-        ed_content = findViewById(R.id.content);
+        operator = new PlanCRUB(getApplicationContext());
+        ed_content = findViewById(R.id.new_plan_content);
         floatingActionButton = findViewById(R.id.finish);
-        toolbar = (Toolbar) findViewById(R.id.new_note_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.new_plan_toolbar);
 
 
         setSupportActionBar(toolbar);
@@ -54,7 +51,7 @@ public class New_note extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveNote();
+                savePlan();
             }
         });
 
@@ -65,18 +62,17 @@ public class New_note extends AppCompatActivity {
 
         if (ids != -1){
             operator.open();
-            note = operator.getNote(ids);
+            plan = operator.getPlan(ids);
             operator.close();
 
-            ed_title.setText(note.getTitle());
-            ed_content.setText(note.getContent());
+            ed_content.setText(plan.getContent());
         }
 
         //为悬浮按钮设置监听事件
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveNote();
+                savePlan();
             }
         });
 
@@ -94,14 +90,14 @@ public class New_note extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_delete:
-                new AlertDialog.Builder(New_note.this)
+                new AlertDialog.Builder(New_plan.this)
                         .setMessage("确认删除此便签吗？")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (isNew == 0){
                                     operator.open();
-                                    operator.removeNote(note);
+                                    operator.removePlan(plan);
                                     operator.close();
                                     goBack();
                                 }
@@ -120,46 +116,43 @@ public class New_note extends AppCompatActivity {
 
 
 
-    //重写返回方法，如果是属于新建Note，则插入数据表并返回主页面，如果是修改Note，修改表中数据并返回主页面
+    //重写返回方法，如果是属于新建Plan，则插入数据表并返回主页面，如果是修改Plan，修改表中数据并返回主页面
     @Override
     public void onBackPressed() {
-        saveNote();
+        savePlan();
     }
 
 
-    // 保存Note的方法
-    private void saveNote(){
+    // 保存Plan的方法
+    private void savePlan(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH：mm");
         Date date = new Date(System.currentTimeMillis());
         String time = simpleDateFormat.format(date);
-        Log.d("new_note", "isSave: "+time);
-        String title = ed_title.getText().toString();
+        Log.d("new_plan", "isSave: "+time);
         String content = ed_content.getText().toString();
         if(ids != -1){
-            note.setTitle(title);
-            note.setContent(content);
-            note.setTime(time);
+            plan.setContent(content);
 
             operator.open();
-            operator.updateNote(note);
+            operator.updatePlan(plan);
             operator.close();
         }
-        //新建note
-        else if (isNew == 1 && (!title.equals("") || !content.equals(""))){
-            note = new Note(title, content, time);
+        //新建plan
+        else if (isNew == 1 && !content.equals("")){
+            plan = new Plan(content, 0);
             operator.open();
-            operator.addNote(note);
+            operator.addPlan(plan);
             operator.close();
         }
         goBack();
     }
 
     private void goBack(){
-        Intent intent = new Intent(New_note.this,MainActivity.class);
+        Intent intent = new Intent(New_plan.this,MainActivity.class);
         intent.putExtra("res", 4);
         setResult(RESULT_OK, intent);
         startActivity(intent);
-        New_note.this.finish();
+        New_plan.this.finish();
     }
 
 
