@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+
+// 空页面，供activity的重新加载使用
 public class BlockActivity extends AppCompatActivity {
 
     @Override

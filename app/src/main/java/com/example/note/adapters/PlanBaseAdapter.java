@@ -43,6 +43,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         Log.d("on create", "PlanBaseAdapter: backlist = :" + backList.toString());
     }
 
+    // 获得ViewHolder
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,8 +52,10 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         return new InnerHolder(view);
     }
 
+    // 返回具体的列表项layout文件
     protected abstract View getSubView(ViewGroup parent, int viewType);
 
+    // 使用ViewHolder对列表中的列表项元素进行绑定数据 和 时间
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         Plan plan = allPlans.get(position);
@@ -73,6 +76,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         });
     }
 
+    // 返回列表中的值
     @Override
     public int getItemCount() {
         if(allPlans == null){
@@ -81,7 +85,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         return allPlans.size();
     }
 
-
+    // 拖动后回调函数
     @Override
     public void onMove(int fromPosition, int toPosition) {
         Log.d("onMove", "onMove: onMove is called! in PlanAdapter " + "\n"
@@ -108,6 +112,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         notifyItemMoved(fromPosition, toPosition);
     }
 
+    // 交换item 的id ，改变顺序
     private void swapId(List<Plan> allPlans, int i, int i1) {
         Log.d("onMove", "in swap: " + "swap " + i + " with " + i1);
         long id1 = allPlans.get(i).getId();
@@ -116,6 +121,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
         allPlans.get(i1).setId(id1);
     }
 
+    // 侧滑事件回调
     @Override
     public void onSwiped(int position) {
 
@@ -131,8 +137,7 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
     private PlanBaseAdapter.OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
     private RecyclerView recyclerView;
 
-    //实现接口，设置监听器
-
+    //实现接口，并设置监听器
     public void setOnRecyclerViewItemClickListener(PlanBaseAdapter.OnRecyclerViewItemClickListener onRecyclerViewItemClickListener){
         this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }

@@ -9,7 +9,7 @@ import com.example.note.R;
 
 import java.util.List;
 
-
+// 瀑布流的adapter
 public class StaggerAdapter  extends NoteBaseAdapter
         implements View.OnClickListener, ItemTouchCallBack.OnItemTouchListener{
 

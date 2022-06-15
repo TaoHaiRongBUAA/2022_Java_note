@@ -20,9 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+// 类似与New_plan
 public class New_note extends AppCompatActivity {
-
 
     EditText ed_title;
     EditText ed_content;

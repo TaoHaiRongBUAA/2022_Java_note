@@ -13,7 +13,7 @@ import com.example.note.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
+ // 线性的note adapter
 public class NoteListAdapter extends NoteBaseAdapter{
 
 

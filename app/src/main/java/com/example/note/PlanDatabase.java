@@ -6,9 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+
+// plan 的数据库
+
+
 public class PlanDatabase extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "plans";
-    public static final String ID = "_id"; //'_'表示为主键
+    public static final String ID = "_id";              //'_'表示为主键
     public static final String CONTENT = "content";
     public static final String ISFINISHED = "isFinished";
 

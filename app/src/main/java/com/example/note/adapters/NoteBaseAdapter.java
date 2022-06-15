@@ -18,7 +18,7 @@ import com.example.note.R;
 import java.util.ArrayList;
 import java.util.List;
 
-// Adapter的基类
+// 基本与PlanBaseAdapter相同
 public abstract class NoteBaseAdapter extends RecyclerView.Adapter<NoteBaseAdapter.InnerHolder>
     implements View.OnClickListener, ItemTouchCallBack.OnItemTouchListener, Filterable
 {

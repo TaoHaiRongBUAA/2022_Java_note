@@ -20,8 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class New_plan extends AppCompatActivity {
 
+// 新建和编辑plan 的页面
+
+public class New_plan extends AppCompatActivity {
 
     EditText ed_content;
     FloatingActionButton floatingActionButton;
@@ -33,6 +35,7 @@ public class New_plan extends AppCompatActivity {
     int isNew;
 
 
+    // 页面创建时，找到控件，设置对应事件
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

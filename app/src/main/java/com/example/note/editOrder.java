@@ -47,6 +47,7 @@ public class editOrder extends AppCompatActivity {
         Intent intent = this.getIntent();
         inNote = intent.getIntExtra("inNote",-1);
 
+        // 根据MainActivity传入的inNote判断加载plan还是note
         if (inNote == 0){
             NoteCRUB operator = new NoteCRUB(context);
             operator.open();
@@ -66,7 +67,7 @@ public class editOrder extends AppCompatActivity {
         layoutInflater = getLayoutInflater();
 
 
-
+        // 设置toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,6 +75,7 @@ public class editOrder extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // 根据inNote设置adapter
         if (inNote == 0){
             recyclerView.setAdapter(noteAdapter);
             noteAdapter = new NoteListAdapter(layoutInflater,  (List<Note>)(List<?>) allItems);
@@ -85,6 +87,7 @@ public class editOrder extends AppCompatActivity {
             recyclerView.setAdapter(planAdapter);
         }
 
+        // 设定拖动事件
         ItemTouchCallBack touchCallBack = new ItemTouchCallBack();
         if (inNote == 0){
             touchCallBack.setOnItemTouchListener(noteAdapter);
@@ -105,6 +108,7 @@ public class editOrder extends AppCompatActivity {
 
     }
 
+    // 点击左上角后完成编辑
     private void finishEdit() {
         Log.d(TAG, "finishEdit: in finishEdit");
 

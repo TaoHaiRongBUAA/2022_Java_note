@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+// 拖动和侧滑的帮助类
 public class ItemTouchCallBack extends ItemTouchHelper.Callback {
     private static final String TAG = "drag";
     private OnItemTouchListener onItemTouchListener;

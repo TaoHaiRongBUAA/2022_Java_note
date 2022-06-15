@@ -14,6 +14,7 @@ import com.example.note.R;
 import java.util.ArrayList;
 import java.util.List;
 
+//  线性 的  adapter
 public class PlanListAdapter extends PlanBaseAdapter  {
 
     public PlanListAdapter(LayoutInflater inf, List<Plan> arry) {

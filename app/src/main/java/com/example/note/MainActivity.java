@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         layoutInflater = getLayoutInflater();
 
-        // 获取保存到磁盘的数据
+        // 获取保存在磁盘的数据
         shp = getPreferences(Context.MODE_PRIVATE);
         editor = shp.edit();
         setPicture(recyclerView);
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("setting", "setting in Note = 1");
         }
 
-
         initPopUpView();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //浮动button的事件
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 设置recyclerView的adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (inNote == 0){
             Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Note>) (List<?>)allItems);
@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         }
         refreshRecyclerView();
 
+        // 对不同的adapter进行设置
         if (inNote == 0){
             noteAdapter.setOnRecyclerViewItemClickListener(new NoteListAdapter.OnRecyclerViewItemClickListener() {
                 @Override
@@ -249,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "refresh: allItem = " + allItems.toString());
     }
 
+    // 保存用户正在访问的note - plan
     public void setInNote(int Mode){
         Log.d("changing", "in setInNote");
 
@@ -353,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 popupCover.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
                 popupWindow.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
 
+                // 更换背景的pop菜单
                 iv_setting_pic = (ImageView) viewGroup.findViewById(R.id.setting_pic_img);
                 tv_setting_pic = (TextView) viewGroup.findViewById(R.id.setting_pic_txt);
                 iv_setting_pic.setOnClickListener(new View.OnClickListener() {
@@ -369,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
+                // 切换note - plan 的菜单
                 iv_setting_mode = (ImageView) viewGroup.findViewById(R.id.settting_mode_img);
                 tv_setting_mode = (TextView) viewGroup.findViewById(R.id.setting_mode_txt);
 
@@ -460,6 +463,7 @@ public class MainActivity extends AppCompatActivity {
 
     //更换背景图片的操作，涉及到调用手机系统的接口等，勿动！！！！！
 
+    // 发起请求
     public void takePhoto(View view){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED){
@@ -469,6 +473,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 请求权限的结果处理
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -489,6 +494,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 获取权限后，执行访问
     private void dotake() {
         File imageTemp = new File(getExternalCacheDir(), "imageOut.jpeg");
         if(imageTemp.exists()){
@@ -512,6 +518,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // 从其他页面返回的回调函数
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -539,6 +546,7 @@ public class MainActivity extends AppCompatActivity {
         refreshRecyclerView();
     }
 
+    // 获得图片后的处理方法
     private void handleImageBeforeApi19(Intent data){
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
@@ -547,6 +555,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    // api19 上的获得图片后的处理方法
     @TargetApi(19)
     private void handleImageOnApi19(Intent data) {
         String imagePath = null;
@@ -578,6 +587,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // 文件字节流转成bitmap
     private void resolveMSFContent(Uri uri, String documentId) {
         File file = new File(getCacheDir(), "temp_file"+getContentResolver().getType(uri).split("/")[1]);
 
@@ -607,6 +617,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // 获得图片路径
     private String getImagePath(Uri uri, String selection){
         String path = null;
         Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
@@ -621,6 +632,8 @@ public class MainActivity extends AppCompatActivity {
         return  path;
     }
 
+
+    // 展示选中的图片
     private void displayImage(String imagePath){
         if(imagePath != null){
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
@@ -631,7 +644,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // 从相册中选择图片
     public void choosePhoto(View view){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
@@ -641,6 +654,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 打开相册
     private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");

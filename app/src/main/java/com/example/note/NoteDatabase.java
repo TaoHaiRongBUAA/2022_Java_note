@@ -10,6 +10,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+// note 的数据库
 public class NoteDatabase extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "notes";
     public static final String TITLE = "title";
