@@ -20,9 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-
-// 新建和编辑plan 的页面
-
+/**
+ * 新建和编辑plan 的页面
+ */
 public class New_plan extends AppCompatActivity {
 
     EditText ed_content;
@@ -35,7 +35,12 @@ public class New_plan extends AppCompatActivity {
     int isNew;
 
 
-    // 页面创建时，找到控件，设置对应事件
+    /**
+     * 页面创建时，找到控件，设置对应事件：<br>
+     * - 设置返回键的click监听事件；<br>
+     * - 获得mainActivity传入的值；<br>
+     * - 为悬浮按钮设置监听事件
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class New_plan extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // 设置返回键的click监听事件
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,14 +87,21 @@ public class New_plan extends AppCompatActivity {
 
     }
 
-    // 配置编辑界面页面菜单
+
+    /**
+     * 配置编辑界面页面菜单
+     * @param menu 菜单
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // 设置右上角的点击删除事件
+    /**
+     * 设置右上角的点击删除事件
+     * @param item 菜单项
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -119,14 +132,19 @@ public class New_plan extends AppCompatActivity {
 
 
 
-    //重写返回方法，如果是属于新建Plan，则插入数据表并返回主页面，如果是修改Plan，修改表中数据并返回主页面
+
+    /**
+     * 返回方法，如果是属于新建Plan，则插入数据表并返回主页面，如果是修改Plan，修改表中数据并返回主页面
+     */
     @Override
     public void onBackPressed() {
         savePlan();
     }
 
 
-    // 保存Plan的方法
+    /**
+     * 保存Plan的方法
+     */
     private void savePlan(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH：mm");
         Date date = new Date(System.currentTimeMillis());

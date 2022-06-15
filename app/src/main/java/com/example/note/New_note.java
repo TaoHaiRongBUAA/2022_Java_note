@@ -20,7 +20,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// 类似与New_plan
+/**
+ * 新建和编辑 Note 的页面 (Activity)
+ */
 public class New_note extends AppCompatActivity {
 
     EditText ed_title;
@@ -33,7 +35,14 @@ public class New_note extends AppCompatActivity {
     Toolbar toolbar;
     int isNew;
 
-
+    /**
+     * 这是进入 New_note 的 Activity 时运行的初始化函数
+     * 实现的功能有：<br>
+     * - 设置返回键的 click 监听事件<br>
+     * - 获得 mainActivity 传入的值<br>
+     * - 为悬浮按钮设置监听事件<br>
+     * @param savedInstanceState 保存着 Activity 的状态
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,14 +90,22 @@ public class New_note extends AppCompatActivity {
 
     }
 
-    // 配置编辑界面页面菜单
+    /**
+     * 初始化配置编辑页面的菜单
+     * @param menu 输入的菜单
+     * @return 菜单是否被显示
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // 设置右上角的点击删除事件
+    /**
+     * 设置右上角的点击删除事件
+     * @param item 被选择的菜单
+     * @return 返回 false 允许正常菜单处理继续进行，返回 true 在这里使用。
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -117,16 +134,21 @@ public class New_note extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    //重写返回方法，如果是属于新建Note，则插入数据表并返回主页面，如果是修改Note，修改表中数据并返回主页面
+    /**
+     * 重写返回方法，如果是属于新建Note，则插入数据表并返回主页面，
+     * 如果是修改Note，修改表中数据并返回主页面
+     */
     @Override
     public void onBackPressed() {
         saveNote();
     }
 
 
-    // 保存Note的方法
+    /**
+     * 保存Note的方法:<br>
+     * 如果 Note 已存在，则更改信息及内容
+     * 否则新建一个 Note
+     */
     private void saveNote(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH：mm");
         Date date = new Date(System.currentTimeMillis());
@@ -153,6 +175,9 @@ public class New_note extends AppCompatActivity {
         goBack();
     }
 
+    /**
+     * 返回上一页
+     */
     private void goBack(){
         Intent intent = new Intent(New_note.this,MainActivity.class);
         intent.putExtra("res", 4);

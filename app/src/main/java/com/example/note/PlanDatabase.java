@@ -7,9 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 
-// plan 的数据库
 
-
+/**
+ * plan 的数据库
+ */
 public class PlanDatabase extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "plans";
     public static final String ID = "_id";              //'_'表示为主键
@@ -30,7 +31,12 @@ public class PlanDatabase extends SQLiteOpenHelper {
         );
     }
 
-    //更新版本用
+    /**
+     * 更新版本用
+     * @param db 数据库
+     * @param oldVersion 旧版本
+     * @param newVersion 新版本
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

@@ -21,16 +21,14 @@
     </androidx.recyclerview.widget.RecyclerView>
 
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/editOrder_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
         android:elevation="4dp"
-        app:titleTextColor="@color/black"
         app:title="编辑顺序"
-        >
+        app:titleTextColor="@color/black">
 
     </androidx.appcompat.widget.Toolbar>
 

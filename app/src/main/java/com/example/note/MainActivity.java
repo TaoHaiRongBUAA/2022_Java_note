@@ -70,6 +70,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * app 的主页面，可以显示已有的 Note，根据关键字搜索 Note，
+ * 清空所有 Note，进入设置，更换背景图片，进入待办。
+ */
 public class MainActivity extends AppCompatActivity {
     final String TAG = "mainActivity";
     FloatingActionButton btn;
@@ -111,6 +116,15 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_TAKE = 1;
     public static final int REQUEST_CODE_CHOOSE = 0;
 
+    /**
+     * Activity 的初始化方法：<br>
+     * - 获取保存在磁盘的数据；<br>
+     * - 设置 toolbar 代替 actionbar；<br>
+     * - 浮动 button 的事件；<br>
+     * - 设置 recyclerView 的 adapter；<br>
+     * - 对不同的 adapter 进行设置
+     * @param savedInstanceState 保存着 Activity 的状态
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,7 +243,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // 刷新recyclerView
+    /**
+     * 刷新recyclerView
+     */
     @SuppressLint("NotifyDataSetChanged")
     public void refreshRecyclerView(){ // type == 1 表示Note， type == 2 表示plan
 //        Log.d(TAG, "in refreshRecyclerView! ");
@@ -250,7 +266,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "refresh: allItem = " + allItems.toString());
     }
 
-    // 保存用户正在访问的note - plan
+    /**
+     * 保存用户正在访问的 note - plan
+     * @param Mode 区分是 Note 还是 Plan
+     */
     public void setInNote(int Mode){
         Log.d("changing", "in setInNote");
 
@@ -263,7 +282,9 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.finish();
     }
 
-    // 切换为显示plan
+    /**
+     * 切换为显示plan
+     */
     public void changeMode(){
         Log.d("changing", "in showPlan");
         setInNote(inNote == 0 ? 1 : 0 );
@@ -302,7 +323,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // 设置右上角的点击删除事件
+    /**
+     * 设置右上角的点击删除事件
+     * @param item 被选择的菜单
+     * @return 返回 false 允许正常菜单处理继续进行，返回 true 在这里使用。
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -329,7 +354,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // 右侧弹出菜单
+    /**
+     * 初始化左侧弹出菜单
+     */
     public void initPopUpView(){
         relativeLayout = (RelativeLayout) findViewById(R.id.main_layout);
         c_layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -340,6 +367,13 @@ public class MainActivity extends AppCompatActivity {
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
     }
 
+    /**
+     * 左边的显示弹出菜单：<br>
+     * - 在主页面加载完成后，再进行弹出<br>
+     *  - 更换背景的pop菜单<br>
+     *  - 切换 note - plan 的菜单<br>
+     *  - 点击空处，回弹操作<br>
+     */
     public void showPopUpView(){
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
@@ -419,7 +453,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 显示弹窗菜单
+    /**
+     * 显示弹窗菜单
+     * @param view 视图层
+     */
     public void showPopmenu(View view){
 //        Log.d("popmenu", "show popmenu is called!");
 
@@ -455,15 +492,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //初始化背景照片
+    /**
+     * 初始化背景照片
+     * @param view 视图层
+     */
     public void setPicture(View view){
         String pic = shp.getString("PICTURE", "");
         view.setBackground(new BitmapDrawable(ImageUtil.base64ToImage(pic)));
     }
 
-    //更换背景图片的操作，涉及到调用手机系统的接口等，勿动！！！！！
+    /*
+     * 更换背景图片的操作，涉及到调用手机系统的接口等，勿动！！！！！
+     */
 
-    // 发起请求
+    /**
+     * 发起请求
+     * @param view 视图层
+     */
     public void takePhoto(View view){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED){
@@ -473,7 +518,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 请求权限的结果处理
+    /**
+     * 请求权限的结果处理
+     * @param requestCode The request code passed in requestPermissions(String[], int).
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions which is either
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -494,7 +544,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 获取权限后，执行访问
+    /**
+     * 获取权限后，执行访问
+     */
     private void dotake() {
         File imageTemp = new File(getExternalCacheDir(), "imageOut.jpeg");
         if(imageTemp.exists()){
@@ -518,7 +570,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // 从其他页面返回的回调函数
+    /**
+     * 从其他页面返回的回调函数
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -546,7 +600,9 @@ public class MainActivity extends AppCompatActivity {
         refreshRecyclerView();
     }
 
-    // 获得图片后的处理方法
+    /**
+     * 获得图片后的处理方法
+     */
     private void handleImageBeforeApi19(Intent data){
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
@@ -555,7 +611,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // api19 上的获得图片后的处理方法
+    /**
+     * api19 上的获得图片后的处理方法
+     */
     @TargetApi(19)
     private void handleImageOnApi19(Intent data) {
         String imagePath = null;
@@ -587,7 +645,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // 文件字节流转成bitmap
+    /**
+     * 文件字节流转成bitmap
+     */
     private void resolveMSFContent(Uri uri, String documentId) {
         File file = new File(getCacheDir(), "temp_file"+getContentResolver().getType(uri).split("/")[1]);
 
@@ -617,7 +677,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // 获得图片路径
+    /**
+     * 获得图片路径
+     * @return 图片路径
+     */
     private String getImagePath(Uri uri, String selection){
         String path = null;
         Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
@@ -632,8 +695,10 @@ public class MainActivity extends AppCompatActivity {
         return  path;
     }
 
-
-    // 展示选中的图片
+    /**
+     * 展示选中的图片
+     * @param imagePath 图片路径
+     */
     private void displayImage(String imagePath){
         if(imagePath != null){
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
@@ -644,7 +709,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 从相册中选择图片
+    /**
+     * 从相册中选择图片
+     * @param view 视图层
+     */
     public void choosePhoto(View view){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
@@ -654,7 +722,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 打开相册
+    /**
+     * 打开相册
+     */
     private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");

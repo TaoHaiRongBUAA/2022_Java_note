@@ -11,8 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-// plan 的增删改查操作
-
+/**
+ * plan 的增删改查操作
+ */
 public class PlanCRUB {
     final String TAG = "PlanCRUB";
     SQLiteOpenHelper dbHandler;
@@ -36,6 +37,11 @@ public class PlanCRUB {
         dbHandler.close();
     }
 
+    /**
+     * 添加新 Plan
+     * @param plan 输入的 Plan
+     * @return 被添加的 Plan
+     */
     public Plan addPlan(Plan plan) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlanDatabase.CONTENT, plan.getContent());
@@ -45,6 +51,11 @@ public class PlanCRUB {
         return plan;
     }
 
+    /**
+     * 通过 id 查找 Plan
+     * @param id id
+     * @return 找到的 Plan
+     */
     public Plan getPlan(long id){
         Cursor cursor = db.query(PlanDatabase.TABLE_NAME, columns, PlanDatabase.ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
@@ -54,6 +65,10 @@ public class PlanCRUB {
         return tmp;
     }
 
+    /**
+     * 获取所有 Plan
+     * @return 找到的 Plan 列表
+     */
     @SuppressLint("Range")
     public List<Plan> getAllPlans(){
 //        Log.d(TAG, "in getAllPlans");
@@ -78,6 +93,11 @@ public class PlanCRUB {
         return plans;
     }
 
+    /**
+     * 更新 Plan
+     * @param plan 新的 Plan
+     * @return 数据库更新结果
+     */
     public int updatePlan(Plan plan){
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlanDatabase.CONTENT, plan.getContent());
@@ -86,6 +106,10 @@ public class PlanCRUB {
             PlanDatabase.ID + "=?", new String[]{String.valueOf(plan.getId())});
     }
 
+    /**
+     * 删除 Plan
+     * @param plan 被删除的 Plan
+     */
     public void removePlan(Plan plan){
         db.delete(PlanDatabase.TABLE_NAME, PlanDatabase.ID + "=" + plan.getId(), null);
     }

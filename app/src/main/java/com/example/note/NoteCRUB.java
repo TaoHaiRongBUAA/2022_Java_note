@@ -11,7 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-// note 的增删改查操作
+/**
+ * Note 的增删改查操作
+ */
 public class NoteCRUB {
     final String TAG = "NoteCRUB";
     SQLiteOpenHelper dbHandler;
@@ -36,6 +38,11 @@ public class NoteCRUB {
         dbHandler.close();
     }
 
+    /**
+     * 添加 Note
+     * @param note 被添加的 Note
+     * @return 添加后的 Note
+     */
     public Note addNote(Note note) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDatabase.TITLE, note.getTitle());
@@ -46,6 +53,11 @@ public class NoteCRUB {
         return note;
     }
 
+    /**
+     * 通过 id 查找 Note
+     * @param id is
+     * @return 找到的 Note
+     */
     public Note getNote(long id){
         Cursor cursor = db.query(NoteDatabase.TABLE_NAME, columns, NoteDatabase.ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
@@ -54,6 +66,10 @@ public class NoteCRUB {
         return tmp;
     }
 
+    /**
+     * 查找并列举所有 Note
+     * @return 所有 Note 的列表
+     */
     @SuppressLint("Range")
     public List<Note> getAllNotes(){
 //        Log.d(TAG, "in getAllNotes");
@@ -79,6 +95,11 @@ public class NoteCRUB {
         return notes;
     }
 
+    /**
+     * 更新一个 Note
+     * @param note 新的 Note
+     * @return 数据库更新结果
+     */
     public int updateNote(Note note){
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDatabase.TITLE, note.getTitle());
@@ -88,6 +109,10 @@ public class NoteCRUB {
             NoteDatabase.ID + "=?", new String[]{String.valueOf(note.getId())});
     }
 
+    /**
+     * 删除 Note
+     * @param note 被删除的 Note
+     */
     public void removeNote(Note note){
         db.delete(NoteDatabase.TABLE_NAME, NoteDatabase.ID + "=" + note.getId(), null);
     }

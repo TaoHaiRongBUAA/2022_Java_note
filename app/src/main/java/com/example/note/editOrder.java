@@ -23,6 +23,9 @@ import com.example.note.adapters.PlanListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 拖动编辑顺序的页面
+ */
 public class editOrder extends AppCompatActivity {
 
     private static final String TAG = "edit order";
@@ -39,6 +42,13 @@ public class editOrder extends AppCompatActivity {
     SharedPreferences shp;
     int inNote;
 
+    /**
+     * 页面的初始化函数：<br>
+     * - 根据MainActivity传入的inNote判断加载plan还是note；<br>
+     * - 设置toolbar<br>
+     * - 根据inNote设置adapter<br>
+     * - 设定拖动事件<br>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +118,9 @@ public class editOrder extends AppCompatActivity {
 
     }
 
-    // 点击左上角后完成编辑
+    /**
+     * 点击左上角后完成编辑
+     */
     private void finishEdit() {
         Log.d(TAG, "finishEdit: in finishEdit");
 

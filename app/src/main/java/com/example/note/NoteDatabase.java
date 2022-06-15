@@ -10,7 +10,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-// note 的数据库
+/**
+ * note 的数据库
+ */
 public class NoteDatabase extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "notes";
     public static final String TITLE = "title";
@@ -33,7 +35,12 @@ public class NoteDatabase extends SQLiteOpenHelper {
         );
     }
 
-    //更新版本用
+    /**
+     * 更新版本用
+     * @param db 数据库
+     * @param oldVersion 旧版本
+     * @param newVersion 新版本
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
