@@ -28,8 +28,14 @@ public abstract class NoteBaseAdapter extends RecyclerView.Adapter<NoteBaseAdapt
     private List<Note> backList;
     private MyFilter mFilter;
 
+    private String  TAG = "adapter";
+
     public void setAllNotes(List<Note> allNotes){
         this.allNotes = allNotes;
+        this.backList = allNotes;
+        Log.d(TAG, "setAllNotes: set backlist : " + backList.toString() + "\n"
+                + "allnotes :" + allNotes.toString()
+        );
     }
 
     public NoteBaseAdapter(LayoutInflater inf, List<Note> arry){
@@ -153,8 +159,6 @@ public abstract class NoteBaseAdapter extends RecyclerView.Adapter<NoteBaseAdapt
 
     }
 
-
-
     // 过滤器， for search
 
     @Override
@@ -182,22 +186,23 @@ public abstract class NoteBaseAdapter extends RecyclerView.Adapter<NoteBaseAdapt
                     }
                 }
 
-//                Log.d("adapter", "\n key = " + charSequence + "\n"
-//                        + "list : " + backList.toString() + "\n"
-//                        + "res:" + list.toString()
-//                );
+                Log.d(TAG, "\n key = " + charSequence + "\n"
+                        + "list : " + backList.toString() + "\n"
+                        + "res:" + list.toString()
+                );
             }
             result.values = list; //将得到的集合保存到FilterResults的value变量中
             result.count = list.size();//将集合的大小保存到FilterResults的count变量中
 
             return result;
         }
+
         //在publishResults方法中告诉适配器更新界面
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             allNotes = (List<Note>)filterResults.values;
             if (filterResults.count>0){
-                notifyDataSetChanged();//通知数据发生了改变
+                notifyDataSetChanged(); //通知数据发生了改变
             }else {
                 Log.d("Adapter", "get search result error!");
             }

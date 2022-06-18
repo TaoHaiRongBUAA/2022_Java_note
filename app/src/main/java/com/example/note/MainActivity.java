@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
      * 刷新recyclerView
      */
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshRecyclerView(){ // type == 1 表示Note， type == 2 表示plan
+    public void refreshRecyclerView(){
 //        Log.d(TAG, "in refreshRecyclerView! ");
         if (allItems.size() > 0) allItems.clear();
         if (inNote == 0){
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
         editor.putInt("inNote", Mode);
         Boolean flag = editor.commit();
-        Log.d("setInNote", "flag is " + flag);
+//        Log.d("setInNote", "flag is " + flag);
 
         Intent intent = new Intent(getApplicationContext(),BlockActivity.class);
         startActivity(intent);
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
      * 切换为显示plan
      */
     public void changeMode(){
-        Log.d("changing", "in showPlan");
+//        Log.d("changing", "in showPlan");
         setInNote(inNote == 0 ? 1 : 0 );
     }
 
@@ -309,12 +309,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (inNote == 0){
+                    noteAdapter.setAllNotes((List<Note>) (List<?>)allItems);
                     noteAdapter.getFilter().filter(newText);
                 }else{
                     planAdapter.getFilter().filter(newText);
                 }
-
-                refreshRecyclerView();
+//                refreshRecyclerView();
                 return false;
             }
         });
