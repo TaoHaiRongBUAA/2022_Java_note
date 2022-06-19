@@ -63,6 +63,7 @@ public class NoteCRUB {
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) cursor.moveToFirst();
         Note tmp = new Note(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+        tmp.setId(id);
         return tmp;
     }
 

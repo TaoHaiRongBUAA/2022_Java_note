@@ -34,6 +34,7 @@ public class New_note extends AppCompatActivity {
     NoteCRUB operator;
     Toolbar toolbar;
     int isNew;
+    private String TAG = "New_note";
 
     /**
      * 这是进入 New_note 的 Activity 时运行的初始化函数
@@ -72,10 +73,12 @@ public class New_note extends AppCompatActivity {
         isNew = intent.getIntExtra("isNew", 0);
 
         if (ids != -1){
+            Log.d(TAG, "onCreate: ids = " + ids);
             operator.open();
             note = operator.getNote(ids);
             operator.close();
 
+            Log.d(TAG, "onCreate: get note: " + note.toString());
             ed_title.setText(note.getTitle());
             ed_content.setText(note.getContent());
         }
@@ -118,6 +121,7 @@ public class New_note extends AppCompatActivity {
                                 if (isNew == 0){
                                     operator.open();
                                     operator.removeNote(note);
+                                    Log.d(TAG, "onClick: note is" + note + "ids = " + ids);
                                     operator.close();
                                     goBack();
                                 }
@@ -150,6 +154,7 @@ public class New_note extends AppCompatActivity {
      * 否则新建一个 Note
      */
     private void saveNote(){
+        Log.d(TAG, "saveNote: in save Note");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH：mm");
         Date date = new Date(System.currentTimeMillis());
         String time = simpleDateFormat.format(date);
@@ -157,10 +162,12 @@ public class New_note extends AppCompatActivity {
         String title = ed_title.getText().toString();
         String content = ed_content.getText().toString();
         if(ids != -1){
+            Log.d(TAG, "saveNote: update");
+            note.setId(ids);
             note.setTitle(title);
             note.setContent(content);
             note.setTime(time);
-
+            Log.d(TAG, "saveNote: note is " + note.toString());
             operator.open();
             operator.updateNote(note);
             operator.close();

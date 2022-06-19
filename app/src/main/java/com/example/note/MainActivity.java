@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         inNote = shp.getInt("inNote", 0);
 //        inNote = 1;
 
-        Log.d(TAG, "inNote is " + inNote + "\n");
+//        Log.d(TAG, "inNote is " + inNote + "\n");
 
         // 设置toolbar代替actionbar
         setSupportActionBar(toolbar);
@@ -154,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("setting", "before setting");
         if (inNote == 0){
             getSupportActionBar().setTitle("Note");
-            Log.d("setting", "setting in Note = 0");
+//            Log.d("setting", "setting in Note = 0");
         }else if(inNote == 1){
             getSupportActionBar().setTitle("Plan");
-            Log.d("setting", "setting in Note = 1");
+//            Log.d("setting", "setting in Note = 1");
         }
 
         initPopUpView();
@@ -188,11 +188,11 @@ public class MainActivity extends AppCompatActivity {
         // 设置recyclerView的adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (inNote == 0){
-            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Note>) (List<?>)allItems);
+//            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Note>) (List<?>)allItems);
             noteAdapter = new NoteListAdapter(layoutInflater,  (List<Note>) (List<?>)allItems);
             recyclerView.setAdapter(noteAdapter);
         }else{
-            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Plan>) (List<?>)allItems);
+//            Log.d(TAG, "onCreate: allItems = " + allItems + "\n" + "list = " + (List<Plan>) (List<?>)allItems);
             planAdapter = new PlanListAdapter(layoutInflater,  (List<Plan>) (List<?>)allItems);
             recyclerView.setAdapter(planAdapter);
         }
@@ -239,8 +239,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     /**
@@ -263,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             operator.close();
             planAdapter.notifyDataSetChanged();
         }
-        Log.d(TAG, "refresh: allItem = " + allItems.toString());
+//        Log.d(TAG, "refresh: allItem = " + allItems.toString());
     }
 
     /**
@@ -271,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
      * @param Mode 区分是 Note 还是 Plan
      */
     public void setInNote(int Mode){
-        Log.d("changing", "in setInNote");
+//        Log.d("changing", "in setInNote");
 
         editor.putInt("inNote", Mode);
         Boolean flag = editor.commit();

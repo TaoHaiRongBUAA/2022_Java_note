@@ -139,6 +139,29 @@ public class editOrder extends AppCompatActivity {
             for (Item item :
                     allItems) {
                 operator.updatePlan((Plan) item);
+
+            }
+
+            List<Plan> allPlans = new ArrayList<>();
+            allPlans.addAll(operator.getAllPlans());
+            Log.d(TAG, "finish edit:  " + "\n"
+                    + "allPlans = " + allPlans.toString() + "\n"
+                    + "allItems = " + allItems.toString() + "\n"
+            );
+
+            for (Plan plan :
+                    allPlans) {
+                int flag = 0;
+                for (Item item :
+                        allItems) {
+                    if (plan.getId() == item.getId()) {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 0){
+                    operator.removePlan(plan);
+                }
             }
             operator.close();
         }

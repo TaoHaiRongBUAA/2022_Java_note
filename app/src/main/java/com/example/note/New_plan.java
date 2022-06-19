@@ -33,6 +33,7 @@ public class New_plan extends AppCompatActivity {
     PlanCRUB operator;
     Toolbar toolbar;
     int isNew;
+    private String TAG = "new_plan";
 
 
     /**
@@ -104,16 +105,18 @@ public class New_plan extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected: in selected");
         switch (item.getItemId()){
             case R.id.menu_delete:
                 new AlertDialog.Builder(New_plan.this)
-                        .setMessage("确认删除此便签吗？")
+                        .setMessage("确认删除此代办吗？")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (isNew == 0){
                                     operator.open();
                                     operator.removePlan(plan);
+                                    Log.d(TAG, "onClick: plan is" + plan);
                                     operator.close();
                                     goBack();
                                 }
@@ -152,6 +155,7 @@ public class New_plan extends AppCompatActivity {
         Log.d("new_plan", "isSave: "+time);
         String content = ed_content.getText().toString();
         if(ids != -1){
+
             plan.setContent(content);
 
             operator.open();

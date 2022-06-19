@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note.Plan;
+import com.example.note.PlanCRUB;
 import com.example.note.R;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
     List<Plan> allPlans ;
     MyFilter mFilter;
     List<Plan> backList;
+
+    private String TAG = "PlanBaseAdapter";
 
 
     public void setAllPlans(List<Plan> allPlans){
@@ -95,7 +98,6 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
                 + "list[0] = " + allPlans.get(0).toString() + "\n"
                 + "list[1] = " + allPlans.get(1).toString() + "\n"
         );
-
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
 //                Log.d("onMove", "onMove:  swap " + i + " with " + (i+1));
@@ -107,7 +109,6 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
                 swapId(allPlans, i, i - 1);
             }
         }
-
         Log.d("onMove", "onMove: onMove is end! in PlanAdapter");
         notifyItemMoved(fromPosition, toPosition);
     }
@@ -124,7 +125,9 @@ public abstract class PlanBaseAdapter extends RecyclerView.Adapter<PlanBaseAdapt
     // 侧滑事件回调
     @Override
     public void onSwiped(int position) {
-
+        PlanCRUB operator = new PlanCRUB(null);
+        allPlans.remove(position);
+        notifyDataSetChanged();
     }
 
 
