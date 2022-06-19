@@ -337,7 +337,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dbHelper = new NoteDatabase(context);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                db.delete("notes", null, null);
+                                String TABLE_NAME = (inNote == 0 ? "notes" : "plans");
+                                db.delete(TABLE_NAME, null, null);
                                 db.execSQL("update sqlite_sequence set seq = 0 where name = 'notes'"); //使id重新开始
                                 refreshRecyclerView();
                             }
