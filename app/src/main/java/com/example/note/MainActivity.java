@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
     LayoutInflater layoutInflater;
     int inNote;
 
-    private NoteDatabase dbHelper;
+    private NoteDatabase noteDbHelper;
+    private PlanDatabase planDbHelper;
     private PlanDatabase planDatabase;
     private RecyclerView recyclerView;
     private List<Item> allItems = new ArrayList<>();
@@ -335,11 +336,18 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dbHelper = new NoteDatabase(context);
-                                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                String TABLE_NAME = (inNote == 0 ? "notes" : "plans");
-                                db.delete(TABLE_NAME, null, null);
-                                db.execSQL("update sqlite_sequence set seq = 0 where name = 'notes'"); //使id重新开始
+                                if (inNote == 0){
+                                    noteDbHelper = new NoteDatabase(context);
+                                    SQLiteDatabase db = noteDbHelper.getWritableDatabase();
+                                    db.delete("notes", null, null);
+                                    db.execSQL("update sqlite_sequence set seq = 0 where name = 'notes'"); //使id重新开始
+                                }else{
+                                    planDbHelper = new PlanDatabase(context);
+                                    SQLiteDatabase db = planDbHelper.getWritableDatabase();
+                                    db.delete("plans", null, null);
+                                    db.execSQL("update sqlite_sequence set seq = 0 where name = 'notes'"); //使id重新开始
+                                }
+
                                 refreshRecyclerView();
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
